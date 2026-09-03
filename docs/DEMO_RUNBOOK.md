@@ -2,7 +2,7 @@
 
 ## Setup
 
-1. Run `npm run dev -- --host 127.0.0.1` or open the deployed HTTPS URL.
+1. Open `https://signwise-webmcp.mhurbuns.workers.dev` (or run `npm run dev -- --host 127.0.0.1`).
 2. In the latest ChatGPT desktop app, enable **Browser → Permissions → Enable site tools**.
 3. Use GPT-5.6 Sol or Terra. Use ChatGPT Work or Codex without Full access so the agent cannot bypass the page with terminal/filesystem tools.
 4. Reload SignWise. Confirm **Awaiting your signature**, no findings, and **WebMCP ready · 4 tools**.
@@ -38,7 +38,7 @@ The injected Playwright `document.modelContext` harness proves UI behavior, tool
 Recorded on 4 September 2026 in the ChatGPT desktop built-in browser:
 
 - Model: GPT-5.6 Terra, Medium (the conversation shows a switch from Sol to Terra)
-- App URL: `http://localhost:5173`
+- App URL: `http://localhost:5173` (native rehearsal) and `https://signwise-webmcp.mhurbuns.workers.dev` (final deployment)
 - Agent completion time after the human's `approved` message: 22 seconds
 - Result: review record created for revision 1 with four evidence-linked findings
 - Finding coverage visible in the document: fees, renewal, indemnity, and liability

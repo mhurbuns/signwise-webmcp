@@ -1,5 +1,8 @@
 # Devpost Submission Draft
 
+- Live demo: https://signwise-webmcp.mhurbuns.workers.dev
+- Public repository: https://github.com/mhurbuns/signwise-webmcp
+
 ## Title
 
 SignWise — Human-aware agreement review through WebMCP

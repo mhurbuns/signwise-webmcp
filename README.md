@@ -2,6 +2,9 @@
 
 SignWise is an independent, fixture-based e-signature review prototype for the OpenAI WebMCP Challenge. An agent can inspect the agreement open in the live page, add evidence-backed clause findings, and prepare a review. A person controls the exact approval and every signing action.
 
+- **Live demo:** https://signwise-webmcp.mhurbuns.workers.dev
+- **Source:** https://github.com/mhurbuns/signwise-webmcp
+
 ## Run
 
 ```bash
