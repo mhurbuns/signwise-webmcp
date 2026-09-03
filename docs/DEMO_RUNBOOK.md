@@ -32,3 +32,20 @@
 - automated verification output
 
 The injected Playwright `document.modelContext` harness proves UI behavior, tool lifecycle, and mutation timing. It is not a substitute for one final native ChatGPT Site tools run.
+
+## Native rehearsal record
+
+Recorded on 4 September 2026 in the ChatGPT desktop built-in browser:
+
+- Model: GPT-5.6 Terra, Medium (the conversation shows a switch from Sol to Terra)
+- App URL: `http://localhost:5173`
+- Agent completion time after the human's `approved` message: 22 seconds
+- Result: review record created for revision 1 with four evidence-linked findings
+- Finding coverage visible in the document: fees, renewal, indemnity, and liability
+- Consent boundary: the agent explicitly reported that it did not acknowledge, accept, approve, or sign anything
+- Human action boundary: **Continue to signature** remained a normal page button labelled as human-only and unavailable through WebMCP
+- Version evidence: the review record displays the fixture agreement fingerprint
+- Recent page activity visibly includes clause reads, four `flag_clause` calls, `propose_review`, `record_approved_review`, and final workspace verification
+- Evidence screenshot: `submission-video/signwise-native-terra-rehearsal.png`
+
+The screenshot establishes native Site tools execution and the final state. Capture the initial 4-tool, review 6-tool, and approved 7-tool states during the final video so the entire dynamic lifecycle is visible to judges.

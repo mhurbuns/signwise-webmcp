@@ -51,3 +51,7 @@ Expected visible tool counts: `4 → 6 → 7 → 4`.
 - final native Site tools rehearsal record
 - screenshots showing initial, review, approved, and recorded states
 - truthful disclosure that this is an independent fixture-based prototype
+
+## Native evidence
+
+The full flow was successfully rehearsed in the ChatGPT desktop built-in browser with GPT-5.6 Terra Medium on 4 September 2026. The agent produced four evidence-linked findings, recorded the exact approved review, explicitly preserved the no-accept/no-sign boundary, and left the final signature control to the human. The captured evidence is in `submission-video/signwise-native-terra-rehearsal.png`.
