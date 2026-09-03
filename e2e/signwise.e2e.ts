@@ -43,6 +43,9 @@ test("agent reviews the live agreement through an exact human approval gate", as
   page.on("pageerror", (error) => errors.push(error.message));
   await page.goto("/");
   await expect(page.locator(".integration-status")).toContainText("4 tools");
+  await expect(page.locator(".paper")).toHaveCount(12);
+  await expect(page.locator('[data-page="1"]')).toContainText("Page 1 of 12");
+  await expect(page.locator('[data-page="12"]')).toContainText("Page 12 of 12");
   expect(await toolNames(page)).toEqual(["get_agreement", "get_review_workspace", "list_clauses", "read_clause"]);
 
   await page.getByRole("button", { name: /Open review workspace/ }).click();

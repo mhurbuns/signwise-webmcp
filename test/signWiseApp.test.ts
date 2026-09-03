@@ -24,7 +24,8 @@ describe("SignWiseApp", () => {
   it("returns metadata separately from untrusted clause text", () => {
     const app = new SignWiseApp(fixtureAgreement);
     const info = app.getAgreement();
-    expect(info.ok && info.result.clauseCount).toBe(6);
+    expect(info.ok && info.result.clauseCount).toBe(12);
+    expect(new Set(fixtureAgreement.clauses.map(({ page }) => page))).toEqual(new Set([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]));
     expect(JSON.stringify(info)).not.toContain("Customer shall defend");
     const clauses = app.listClauses();
     expect(clauses.ok && clauses.result.clauses.map(({ id }) => id)).toContain("indemnity");

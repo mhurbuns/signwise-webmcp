@@ -1,4 +1,4 @@
-import { useState, useSyncExternalStore } from "react";
+import { useEffect, useState, useSyncExternalStore } from "react";
 import type { SignWiseApp } from "../application/signWiseApp";
 import type { Agreement, ReviewDraft, RiskFinding, Severity } from "../domain/types";
 import "./styles.css";
@@ -68,6 +68,11 @@ export function App({ app, agreement }: { app: SignWiseApp; agreement: Agreement
   const findings = [...snapshot.findings].sort((a, b) => severityRank[a.severity] - severityRank[b.severity]);
   const webMcpLabel = snapshot.webMcp.status === "ready" ? `WebMCP ready · ${snapshot.webMcp.discoveredToolNames.length} tools` : snapshot.webMcp.status === "checking" ? "WebMCP checking" : `WebMCP ${snapshot.webMcp.status} · 0 tools`;
 
+  useEffect(() => {
+    if (!snapshot.workspace.activeClauseId) return;
+    document.getElementById(`clause-${snapshot.workspace.activeClauseId}`)?.scrollIntoView({ behavior: "smooth", block: "center" });
+  }, [snapshot.workspace.activeClauseId]);
+
   function continueToSignature() {
     setToast("Signature ceremony ready — signing remains your action.");
     window.setTimeout(() => setToast(null), 2600);
@@ -96,24 +101,36 @@ export function App({ app, agreement }: { app: SignWiseApp; agreement: Agreement
             <div><h1>{agreement.filename}</h1><p>{agreement.pageCount} pages · From {agreement.sender} · Due {agreement.dueDate}</p></div>
             <span className="awaiting">Awaiting your signature</span>
           </div>
-          <article className="paper">
-            <div className="paper-title"><span>Agreement No. NS-2048</span><h2>{agreement.title}</h2><p>{agreement.parties.join(" and ")}</p></div>
-            {agreement.clauses.map((clause) => {
-              const finding = snapshot.findings.find(({ clauseId }) => clauseId === clause.id);
-              const selected = snapshot.workspace.activeClauseId === clause.id;
+          <div className="document-pages" aria-label={`${agreement.pageCount}-page agreement`}>
+            {Array.from({ length: agreement.pageCount }, (_, index) => index + 1).map((pageNumber) => {
+              const pageClauses = agreement.clauses.filter(({ page }) => page === pageNumber);
               return (
-                <section id={`clause-${clause.id}`} className={`clause ${finding ? "flagged" : ""} ${selected ? "selected" : ""}`} key={clause.id} onClick={() => app.selectClause(clause.id)}>
-                  <h3>{clause.number}. {clause.title}</h3>
-                  <p>{clause.text}</p>
-                  {finding && <aside className={`margin-flag ${finding.severity}`} aria-label={`${finding.severity} risk finding`}><b>{finding.severity === "critical" ? "!" : snapshot.findings.indexOf(finding) + 1}</b><span>{finding.title}</span></aside>}
-                </section>
+                <article className="paper" data-page={pageNumber} key={pageNumber}>
+                  {pageNumber === 1
+                    ? <div className="paper-title"><span>Agreement No. NS-2048</span><h2>{agreement.title}</h2><p>{agreement.parties.join(" and ")}</p></div>
+                    : <div className="paper-running-head"><span>{agreement.title}</span><span>NS-2048</span></div>}
+                  {pageClauses.map((clause) => {
+                    const finding = snapshot.findings.find(({ clauseId }) => clauseId === clause.id);
+                    const selected = snapshot.workspace.activeClauseId === clause.id;
+                    return (
+                      <section id={`clause-${clause.id}`} className={`clause ${finding ? "flagged" : ""} ${selected ? "selected" : ""}`} key={clause.id} onClick={() => app.selectClause(clause.id)}>
+                        <h3>{clause.number}. {clause.title}</h3>
+                        {clause.text.split("\n\n").map((paragraph) => <p key={paragraph}>{paragraph}</p>)}
+                        {finding && <aside className={`margin-flag ${finding.severity}`} aria-label={`${finding.severity} risk finding`}><b>{finding.severity === "critical" ? "!" : snapshot.findings.indexOf(finding) + 1}</b><span>{finding.title}</span></aside>}
+                      </section>
+                    );
+                  })}
+                  {pageNumber === agreement.pageCount && (
+                    <div className="signature-block">
+                      <div><b>Meridian Labs</b><span>Authorized signature</span></div><div><b>Date</b><span>DD / MM / YYYY</span></div>
+                      <div className={`signature-lock ${snapshot.certificate ? "ready" : ""}`}><span>{snapshot.certificate ? "✓" : "◇"}</span><b>{snapshot.certificate ? "Review recorded — signature step ready" : "Signature remains human-only"}</b><small>{snapshot.certificate ? "You may continue when you are ready." : "The agent can review and prepare, but never sign for you."}</small></div>
+                    </div>
+                  )}
+                  <div className="page-number">Page {pageNumber} of {agreement.pageCount}</div>
+                </article>
               );
             })}
-            <div className="signature-block">
-              <div><b>Meridian Labs</b><span>Authorized signature</span></div><div><b>Date</b><span>DD / MM / YYYY</span></div>
-              <div className={`signature-lock ${snapshot.certificate ? "ready" : ""}`}><span>{snapshot.certificate ? "✓" : "◇"}</span><b>{snapshot.certificate ? "Review recorded — signature step ready" : "Signature remains human-only"}</b><small>{snapshot.certificate ? "You may continue when you are ready." : "The agent can review and prepare, but never sign for you."}</small></div>
-            </div>
-          </article>
+          </div>
         </section>
 
         <aside className="review-rail" aria-label="Agreement review panel">
